@@ -5,6 +5,7 @@ const web3 = new Web3(ganache.provider());
 const { interface, bytecode } = require("../compile");
 
 let loteria;
+let contas;
 
 beforeEach(async () => {
   contas = await web3.eth.getAccounts();
@@ -13,7 +14,7 @@ beforeEach(async () => {
     .deploy({ data: bytecode })
     .send({ from: contas[0], gas: "1000000" });
 });
-describe("Contrato Loteria", () => {
+describe("Contrato Loteria - 04", () => {
   it("Deploy a contract", () => {
     // console.log(inbox);
     assert.ok(loteria.options.address);
@@ -67,32 +68,5 @@ describe("Contrato Loteria", () => {
     } catch (err) {
       assert.ok(err);
     }
-  });
-  it("Somente o gerente pode fazer o sorteio", async () => {
-    try {
-      await loteria.methods.sorteio().send({
-        from: contas[1]
-      });
-
-      assert(false);
-    } catch (err) {
-      assert.ok(err);
-    }
-  });
-  it("Testando o contrato como um todo", async () => {
-    await loteria.methods.jogar().send({
-      from: contas[0],
-      value: web3.utils.toWei("2", "ether")
-    });
-
-    const saldoInicial = await web3.eth.getBalance(contas[0]);
-
-    await loteria.methods.sorteio().send({ from: contas[0] });
-
-    const saldoFinal = await web3.eth.getBalance(contas[0]);
-
-    const diferenca = saldoFinal - saldoInicial;
-
-    assert(diferenca > web3.utils.toWei("1.8", "ether"));
   });
 });
