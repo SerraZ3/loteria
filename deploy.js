@@ -25,7 +25,7 @@ const deploy = async () => {
   const result = await new web3.eth.Contract(abi)
     .deploy({ data: evm.bytecode.object })
     .send({ gas: "1000000", from: accounts[0] });
-  // console.log(abi);
+  console.log(JSON.stringify(abi));
   console.log("Contrato implementado em ", result.options.address);
 
   // chamado para fechar o provider de forma adequada
