@@ -6,12 +6,34 @@ Apresentação auxiliar por Henrique Andrade Serra
 
 ## Configurações iniciais
 
-Crie o `.env` no seu diretório raiz e adicione a variável `mnemonic` com o valor de suas palavras mnemônicas do metamask
+Crie o `.env` no seu diretório raiz e copie o conteúdo do `.env.example` e substitua com suas informações.
 
-```.env
-mnemonic = 'tessa asdf eqwe'
+A variável `mnemonic` deve ser as palavras mnemônicas do seu metamask
+
+## Rodando projeto
+
+Instalando dependencias
+
+```sh
+$ npm install --save
+
+# ou
+
+$ yarn
 ```
 
-Rode o mando `npm install --save`
+### Rodando testes
 
-Para rodar os testes use o comando `npm test`
+```sh
+$ npm test
+
+# ou
+
+$ yarn test
+```
+
+### Realizando o deploy do contrato
+
+```sh
+$ node deploy.js
+```
