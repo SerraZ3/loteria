@@ -1,12 +1,13 @@
-pragma solidity ^0.4.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.4;
 
 contract Loteria{
     address public gerente;
     // cria a variável para receber o endereço do gerente
-    address[] public jogadores;
-    // cria o array para reeber o endereço dos jogadores
+    address payable[] public jogadores;
+    // cria o array para reeber o endereço dos jogadores com capacidade de pagamento
 
-    function Loteria() public{
+    constructor(){
         gerente = msg.sender;
         //atribui o endereço do gerente à variável
     }
@@ -18,15 +19,15 @@ contract Loteria{
     }
 
     function random() private view returns (uint){
-        return uint(keccak256(block.difficulty, now, jogadores));
+        return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, jogadores)));
         // keccak256 gera um hash
     }
 
     function sorteio() public verificaGerente{
         uint indice = random() % jogadores.length;
         //usamos o operador modulo (%) para sortear um indice
-        jogadores[indice].transfer(this.balance);
-        jogadores = new address[](0);
+        jogadores[indice].transfer(address(this).balance);
+        jogadores = new address payable[](0);
     }
 
     modifier verificaGerente(){
@@ -34,7 +35,7 @@ contract Loteria{
         _;
     }
 
-    function getJogadores() public view returns(address[]){
+    function getJogadores() public view returns(address payable[] memory){
         return jogadores;
     }
-} 
+}
